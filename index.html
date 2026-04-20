@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>VitallyMary — Rehab &amp; Medical Monitor</title>
+<style>
+:root {
+  --bg: #0c1222; --bg2: #131b2e; --card: #182240; --card2: #1e2a4a;
+  --input: #1a2545; --text: #e8ecf4; --text2: #8892a8; --muted: #5a6478;
+  --teal: #36d6b5; --teal-dark: #2ab89a; --teal-glow: rgba(54,214,181,0.15);
+  --blue: #4da6ff; --blue-dark: #3a8de0;
+  --red: #ff5757; --red-glow: rgba(255,87,87,0.15); --red-dark: #d94444;
+  --yellow: #ffc947; --yellow-glow: rgba(255,201,71,0.12);
+  --green: #34d399; --green-glow: rgba(52,211,153,0.15);
+  --border: #283354; --shadow: 0 2px 12px rgba(0,0,0,0.3);
+  --radius: 14px; --radius-sm: 10px;
+}
+/* Light Mode */
+.theme-light {
+  --bg: #f0f2f5; --bg2: #ffffff; --card: #ffffff; --card2: #f5f6f8;
+  --input: #f0f2f5; --text: #1a1a2e; --text2: #5a6478; --muted: #8892a8;
+  --teal: #0fa98a; --teal-dark: #0d8e74; --teal-glow: rgba(15,169,138,0.12);
+  --blue: #2b7fd4; --blue-dark: #1f6ab8;
+  --red: #e04545; --red-glow: rgba(224,69,69,0.1); --red-dark: #c33;
+  --yellow: #d9a820; --yellow-glow: rgba(217,168,32,0.1);
+  --green: #1aab7a; --green-glow: rgba(26,171,122,0.1);
+  --border: #dde0e6; --shadow: 0 2px 12px rgba(0,0,0,0.08);
+}
+.theme-light .header { background: #fff; }
+.theme-light .logo-text { background: linear-gradient(135deg, #0fa98a, #2b7fd4); -webkit-background-clip: text; background-clip: text; }
+.theme-light .numpad { background: #fff; }
+.theme-light .numpad-key { background: #f0f2f5; border-color: #dde0e6; color: #1a1a2e; }
+.theme-light .numpad-key:active { background: #e4e6ea; }
+.theme-light .btn-teal { color: #fff; }
+.theme-light .person-avatar.ok { color: #fff; }
+.theme-light .sel-released { color: #fff !important; }
+.theme-light .reading-card { background: #f8f9fb; }
+.theme-light .vital-tap { background: #fff; }
+
+/* Hi-Contrast Mode */
+.theme-hicontrast {
+  --bg: #000000; --bg2: #0a0a0a; --card: #111111; --card2: #1a1a1a;
+  --input: #111111; --text: #ffffff; --text2: #cccccc; --muted: #999999;
+  --teal: #00ffcc; --teal-dark: #00ddaa; --teal-glow: rgba(0,255,204,0.2);
+  --blue: #66bbff; --blue-dark: #44aaff;
+  --red: #ff4444; --red-glow: rgba(255,68,68,0.2); --red-dark: #ee2222;
+  --yellow: #ffdd00; --yellow-glow: rgba(255,221,0,0.15);
+  --green: #44ff88; --green-glow: rgba(68,255,136,0.15);
+  --border: #444444; --shadow: 0 2px 12px rgba(0,0,0,0.6);
+}
+.theme-hicontrast .header { border-bottom-width: 3px; }
+.theme-hicontrast .person-card { border-width: 2px; }
+.theme-hicontrast .reading-card { border-width: 2px; }
+.theme-hicontrast .toggle-btn { border-width: 3px; font-weight: 800; }
+.theme-hicontrast .vital-tap { border-width: 2px; }
+.theme-hicontrast .btn { font-weight: 800; }
+
+/* Pink Mode — for Mary */
+.theme-pink {
+  --bg: #fdf0f5; --bg2: #fff5f9; --card: #ffffff; --card2: #fff0f5;
+  --input: #fdf0f5; --text: #3d1a2e; --text2: #8c5a72; --muted: #b88a9e;
+  --teal: #e8458b; --teal-dark: #d13a7a; --teal-glow: rgba(232,69,139,0.12);
+  --blue: #a855c8; --blue-dark: #9244b0;
+  --red: #e04545; --red-glow: rgba(224,69,69,0.1); --red-dark: #c33;
+  --yellow: #e8a020; --yellow-glow: rgba(232,160,32,0.1);
+  --green: #2dba8e; --green-glow: rgba(45,186,142,0.1);
+  --border: #f0d0e0; --shadow: 0 2px 12px rgba(200,80,140,0.1);
+}
+.theme-pink .header { background: #fff0f5; border-bottom-color: #e8458b; }
+.theme-pink .logo-text { background: linear-gradient(135deg, #e8458b, #a855c8); -webkit-background-clip: text; background-clip: text; }
+.theme-pink .numpad { background: #fff5f9; }
+.theme-pink .numpad-key { background: #fdf0f5; border-color: #f0d0e0; color: #3d1a2e; }
+.theme-pink .numpad-key:active { background: #fce0ec; }
+.theme-pink .btn-teal { color: #fff; }
+.theme-pink .person-avatar.ok { background: linear-gradient(135deg, #e8458b, #a855c8); }
+.theme-pink .stat-num { color: #e8458b; }
+.theme-pink .sel-released { color: #fff !important; }
+.theme-pink .reading-card { background: #fff8fb; }
+.theme-pink .vital-tap { background: #fff; }
+.theme-pink .timeline-title { color: #e8458b; }
+.theme-pink .modal-title { color: #e8458b; }
+.theme-pink .numpad-label { color: #e8458b; }
+.theme-pink .numpad { border-top-color: #e8458b; }
+.theme-pink .numpad-key.key-done { background: #e8458b; color: #fff; }
+.theme-pink .vital-tap:active { border-color: #e8458b; }
+.theme-pink .search-input:focus, .theme-pink .modal-input:focus, .theme-pink .comments-input:focus,
+.theme-pink .session-bar input:focus { border-color: #e8458b; }
+
+/* Theme picker */
+.theme-picker { position: relative; }
+.theme-menu {
+  display: none; position: absolute; right: 0; top: 110%; background: var(--card);
+  border: 1px solid var(--border); border-radius: var(--radius); padding: 6px;
+  min-width: 180px; box-shadow: 0 8px 24px rgba(0,0,0,0.3); z-index: 150;
+}
+.theme-menu.open { display: block; }
+.theme-option {
+  display: flex; align-items: center; gap: 10px; padding: 12px 14px; border: none;
+  background: none; color: var(--text); font-size: 0.9rem; font-weight: 600;
+  width: 100%; border-radius: 8px; cursor: pointer; transition: background 0.1s;
+  touch-action: manipulation; min-height: 46px;
+}
+.theme-option:active { background: var(--card2); }
+.theme-option.active { background: var(--teal-glow); color: var(--teal); }
+.theme-swatch {
+  width: 22px; height: 22px; border-radius: 50%; border: 2px solid var(--border); flex-shrink: 0;
+}
+
+/* Provider field */
+.provider-row {
+  display: flex; align-items: center; gap: 8px; margin-bottom: 10px;
+  padding: 8px 10px; background: var(--card2); border-radius: 8px;
+}
+.provider-label { font-size: 0.72rem; font-weight: 700; color: var(--muted); text-transform: uppercase; white-space: nowrap; }
+.provider-input {
+  flex: 1; padding: 8px 10px; border: 1px solid var(--border); border-radius: 6px;
+  background: var(--input); color: var(--text); font-size: 0.9rem; min-height: 40px;
+}
+.provider-input:focus { outline: none; border-color: var(--teal); }
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: var(--bg); color: var(--text); line-height: 1.5;
+  min-height: 100vh; -webkit-tap-highlight-color: transparent;
+}
+button, select, input { cursor: pointer; touch-action: manipulation; -webkit-touch-callout: none; }
+
+/* Header */
+.header {
+  position: sticky; top: 0; z-index: 100; background: var(--bg2);
+  border-bottom: 2px solid var(--teal); padding: 10px 16px;
+  display: flex; align-items: center; justify-content: space-between;
+  box-shadow: var(--shadow);
+}
+.logo { display: flex; align-items: center; gap: 12px; }
+.logo-icon {
+  width: 44px; height: 44px; position: relative; display: flex; align-items: center; justify-content: center;
+}
+.logo-icon svg { width: 44px; height: 44px; }
+.logo-text { font-size: 1.2rem; font-weight: 800; background: linear-gradient(135deg, var(--teal), var(--blue)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; letter-spacing: -0.5px; }
+.logo-sub { font-size: 0.65rem; color: var(--text2); font-weight: 500; letter-spacing: 0.5px; text-transform: uppercase; }
+.header-actions { display: flex; gap: 8px; }
+
+/* Session bar */
+.session-bar {
+  background: var(--bg2); border-bottom: 1px solid var(--border);
+  padding: 10px 16px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap;
+}
+.session-bar input {
+  padding: 10px 12px; border: 1px solid var(--border); border-radius: var(--radius-sm);
+  background: var(--input); color: var(--text); font-size: 0.9rem; flex: 1; min-width: 100px;
+}
+.session-bar input:focus { outline: none; border-color: var(--teal); }
+.session-bar label { font-size: 0.7rem; color: var(--muted); font-weight: 600; text-transform: uppercase; }
+.session-field { display: flex; flex-direction: column; gap: 3px; flex: 1; min-width: 120px; }
+
+.container { max-width: 700px; margin: 0 auto; padding: 12px; }
+
+/* Stat bar */
+.stat-bar { display: flex; gap: 8px; margin-bottom: 12px; overflow-x: auto; padding-bottom: 4px; }
+.stat-card {
+  flex: 1; min-width: 75px; background: var(--card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 12px 8px; text-align: center;
+}
+.stat-num { font-size: 1.6rem; font-weight: 800; color: var(--teal); }
+.stat-label { font-size: 0.65rem; color: var(--muted); text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px; }
+.stat-card.alert .stat-num { color: var(--red); }
+.stat-card.warn .stat-num { color: var(--yellow); }
+
+/* Buttons — bigger for gloves */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  padding: 14px 20px; border: none; border-radius: var(--radius-sm); font-size: 0.95rem;
+  font-weight: 600; cursor: pointer; transition: all 0.15s; min-height: 48px;
+}
+.btn-teal { background: var(--teal); color: #0c1222; }
+.btn-teal:active { background: var(--teal-dark); transform: scale(0.97); }
+.btn-ghost { background: var(--card); color: var(--text); border: 1px solid var(--border); }
+.btn-ghost:active { background: var(--card2); }
+.btn-red { background: var(--red); color: #fff; }
+.btn-red:active { background: var(--red-dark); transform: scale(0.97); }
+.btn-sm { padding: 10px 14px; font-size: 0.85rem; min-height: 42px; }
+.btn-block { width: 100%; }
+
+/* Person card */
+.person-card {
+  background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+  margin-bottom: 10px; overflow: hidden; transition: all 0.2s;
+}
+.person-card.has-alert { border-color: var(--red); box-shadow: 0 0 12px var(--red-glow); }
+.person-card.has-warn { border-color: var(--yellow); box-shadow: 0 0 12px var(--yellow-glow); }
+.person-header {
+  display: flex; align-items: center; padding: 14px 14px; gap: 12px; cursor: pointer; min-height: 64px;
+}
+.person-avatar {
+  width: 46px; height: 46px; border-radius: 50%; display: flex; align-items: center;
+  justify-content: center; font-weight: 800; font-size: 1rem; color: #fff; flex-shrink: 0;
+}
+.person-avatar.ok { background: linear-gradient(135deg, var(--teal), var(--green)); }
+.person-avatar.alert { background: linear-gradient(135deg, var(--red), #ff8a57); }
+.person-avatar.warn { background: linear-gradient(135deg, var(--yellow), #ffaa33); }
+.person-avatar.new { background: var(--card2); color: var(--muted); }
+.person-info { flex: 1; min-width: 0; }
+.person-name { font-weight: 700; font-size: 1rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.person-meta { font-size: 0.78rem; color: var(--text2); display: flex; gap: 8px; flex-wrap: wrap; margin-top: 2px; }
+.person-meta .tag {
+  display: inline-flex; align-items: center; gap: 3px; padding: 2px 8px;
+  border-radius: 4px; font-size: 0.72rem; font-weight: 600;
+}
+.tag-ok { background: var(--green-glow); color: var(--green); }
+.tag-alert { background: var(--red-glow); color: var(--red); }
+.tag-warn { background: var(--yellow-glow); color: var(--yellow); }
+.tag-pending { background: rgba(77,166,255,0.12); color: var(--blue); }
+.person-actions { display: flex; gap: 8px; align-items: center; }
+.person-chevron { font-size: 1.1rem; color: var(--muted); transition: transform 0.2s; }
+.person-chevron.open { transform: rotate(90deg); }
+.person-body { display: none; padding: 0 14px 14px; }
+.person-body.open { display: block; }
+
+/* Reading card */
+.reading-card {
+  background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius-sm);
+  padding: 14px; margin-bottom: 10px; position: relative;
+}
+.reading-card.alert-reading { border-left: 4px solid var(--red); }
+.reading-card.warn-reading { border-left: 4px solid var(--yellow); }
+.reading-card.ok-reading { border-left: 4px solid var(--green); }
+.reading-header {
+  display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;
+}
+.reading-type-tag {
+  padding: 4px 12px; border-radius: 20px; font-size: 0.78rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.5px;
+}
+.reading-type-tag.starting { background: rgba(77,166,255,0.15); color: var(--blue); }
+.reading-type-tag.rehab { background: var(--green-glow); color: var(--green); }
+.reading-type-tag.ending { background: rgba(255,201,71,0.15); color: var(--yellow); }
+.reading-time {
+  font-family: 'SF Mono','Fira Code',monospace; font-size: 0.85rem;
+  color: var(--text2); cursor: pointer; padding: 4px 10px; border-radius: 6px;
+  border: 1px solid transparent; min-height: 36px; display: flex; align-items: center;
+}
+.reading-time:hover { border-color: var(--border); }
+
+/* Vitals grid */
+.vitals-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.vital-field { display: flex; flex-direction: column; gap: 4px; }
+.vital-field.full { grid-column: 1 / -1; }
+.vital-label {
+  font-size: 0.72rem; font-weight: 700; color: var(--muted);
+  text-transform: uppercase; letter-spacing: 0.4px;
+}
+
+/* Tap-to-enter value display (replaces text inputs for numeric fields) */
+.vital-tap {
+  padding: 12px 14px; border: 1px solid var(--border); border-radius: 8px;
+  background: var(--input); color: var(--text); font-size: 1.05rem; font-weight: 600;
+  min-height: 48px; display: flex; align-items: center; justify-content: space-between;
+  cursor: pointer; transition: all 0.15s; touch-action: manipulation;
+  font-family: 'SF Mono','Fira Code',monospace;
+}
+.vital-tap:active { background: var(--card2); border-color: var(--teal); }
+.vital-tap.empty { color: var(--muted); font-weight: 400; font-family: inherit; }
+.vital-tap.alert-value { border-color: var(--red); background: var(--red-glow); color: var(--red); }
+.vital-tap.warn-value { border-color: var(--yellow); background: var(--yellow-glow); color: var(--yellow); }
+.vital-tap .tap-hint { font-size: 0.7rem; color: var(--muted); font-weight: 400; font-family: -apple-system, sans-serif; }
+
+/* Toggle buttons — bigger for gloves */
+.toggle-row { display: flex; gap: 6px; }
+.toggle-btn {
+  flex: 1; padding: 14px 8px; border: 2px solid var(--border); border-radius: 10px;
+  background: var(--input); color: var(--text2); font-size: 0.92rem; font-weight: 700;
+  text-align: center; cursor: pointer; transition: all 0.15s; touch-action: manipulation;
+  min-height: 52px;
+}
+.toggle-btn:active { transform: scale(0.96); }
+.toggle-btn.sel-green { background: var(--green); color: #0c1222; border-color: var(--green); box-shadow: 0 0 12px var(--green-glow); }
+.toggle-btn.sel-red { background: var(--red); color: #fff; border-color: var(--red); box-shadow: 0 0 12px var(--red-glow); }
+
+/* Disposition — bigger */
+.disp-row { display: flex; gap: 6px; flex-wrap: wrap; }
+.disp-btn {
+  flex: 1; min-width: 90px; padding: 14px 8px; border: 2px solid var(--border); border-radius: 10px;
+  background: var(--input); color: var(--text2); font-size: 0.82rem; font-weight: 700;
+  text-align: center; cursor: pointer; transition: all 0.15s; touch-action: manipulation;
+  min-height: 52px;
+}
+.disp-btn:active { transform: scale(0.96); }
+.disp-btn.sel-released { background: var(--green); color: #0c1222; border-color: var(--green); box-shadow: 0 0 12px var(--green-glow); }
+.disp-btn.sel-remain { background: var(--yellow); color: #0c1222; border-color: var(--yellow); box-shadow: 0 0 12px var(--yellow-glow); }
+.disp-btn.sel-transfer { background: var(--red); color: #fff; border-color: var(--red); box-shadow: 0 0 12px var(--red-glow); }
+
+/* Number Pad Modal */
+.numpad-overlay {
+  display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 300;
+  align-items: flex-end; justify-content: center; padding: 0;
+}
+.numpad-overlay.open { display: flex; }
+.numpad {
+  background: var(--bg2); border-top: 2px solid var(--teal); border-radius: 20px 20px 0 0;
+  width: 100%; max-width: 500px; padding: 16px 16px 24px; box-shadow: 0 -8px 32px rgba(0,0,0,0.5);
+}
+.numpad-header {
+  display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;
+}
+.numpad-label { font-size: 0.85rem; font-weight: 700; color: var(--teal); text-transform: uppercase; letter-spacing: 0.5px; }
+.numpad-display {
+  width: 100%; padding: 16px; background: var(--card); border: 2px solid var(--border);
+  border-radius: 12px; font-family: 'SF Mono','Fira Code',monospace; font-size: 2rem;
+  font-weight: 800; color: var(--text); text-align: right; margin-bottom: 12px;
+  min-height: 64px; display: flex; align-items: center; justify-content: flex-end;
+}
+.numpad-display.alert { color: var(--red); border-color: var(--red); }
+.numpad-display.warn { color: var(--yellow); border-color: var(--yellow); }
+.numpad-display .placeholder { color: var(--muted); font-size: 1rem; font-weight: 400; }
+.numpad-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;
+}
+.numpad-key {
+  padding: 0; border: none; border-radius: 12px; font-size: 1.3rem; font-weight: 700;
+  min-height: 58px; display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: all 0.1s; touch-action: manipulation;
+  background: var(--card); color: var(--text); border: 1px solid var(--border);
+}
+.numpad-key:active { transform: scale(0.93); background: var(--card2); }
+.numpad-key.key-del { background: var(--card2); color: var(--red); font-size: 1.1rem; }
+.numpad-key.key-clear { background: var(--card2); color: var(--yellow); font-size: 0.85rem; }
+.numpad-key.key-done { background: var(--teal); color: #0c1222; font-size: 1rem; font-weight: 800; }
+.numpad-key.key-done:active { background: var(--teal-dark); }
+.numpad-key.key-slash { color: var(--blue); }
+
+/* Timeline */
+.timeline { padding: 8px 0; }
+.timeline-title {
+  font-size: 0.8rem; font-weight: 700; color: var(--teal); text-transform: uppercase;
+  letter-spacing: 0.5px; margin-bottom: 8px; display: flex; align-items: center; gap: 6px;
+}
+.tl-item { display: flex; gap: 10px; padding: 6px 0; position: relative; }
+.tl-dot-col { display: flex; flex-direction: column; align-items: center; width: 20px; }
+.tl-dot {
+  width: 14px; height: 14px; border-radius: 50%; border: 2px solid var(--border);
+  background: var(--card2); flex-shrink: 0; z-index: 1;
+}
+.tl-dot.starting { border-color: var(--blue); background: var(--blue); }
+.tl-dot.rehab { border-color: var(--green); background: var(--green); }
+.tl-dot.ending { border-color: var(--yellow); background: var(--yellow); }
+.tl-dot.alert { border-color: var(--red); background: var(--red); }
+.tl-line { width: 2px; flex: 1; background: var(--border); }
+.tl-content { flex: 1; padding-bottom: 8px; }
+.tl-time { font-family: 'SF Mono','Fira Code',monospace; font-size: 0.78rem; color: var(--text2); }
+.tl-vitals { font-size: 0.78rem; color: var(--text); display: flex; flex-wrap: wrap; gap: 6px; margin-top: 2px; }
+.tl-vital-tag { padding: 2px 7px; border-radius: 4px; font-size: 0.73rem; font-weight: 600; background: var(--card2); }
+.tl-vital-tag.alert { background: var(--red-glow); color: var(--red); }
+.tl-vital-tag.ok { color: var(--text2); }
+.tl-disp { font-size: 0.75rem; font-weight: 700; margin-top: 2px; }
+
+.del-btn {
+  background: none; border: none; color: var(--red); font-size: 1.3rem; cursor: pointer;
+  opacity: 0.5; padding: 4px 8px; transition: opacity 0.2s; min-width: 36px; min-height: 36px;
+  display: flex; align-items: center; justify-content: center;
+}
+.del-btn:hover { opacity: 1; }
+
+/* Modal */
+.modal-bg {
+  display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 200;
+  align-items: center; justify-content: center; padding: 20px;
+}
+.modal-bg.open { display: flex; }
+.modal {
+  background: var(--card); border: 1px solid var(--border); border-radius: 20px;
+  padding: 24px; width: 100%; max-width: 420px; box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+}
+.modal-title { font-size: 1.1rem; font-weight: 800; margin-bottom: 16px; color: var(--teal); }
+.modal-actions { display: flex; gap: 8px; margin-top: 16px; justify-content: flex-end; }
+.modal-input {
+  width: 100%; padding: 14px; border: 1px solid var(--border); border-radius: 10px;
+  background: var(--input); color: var(--text); font-size: 1rem; margin-top: 4px;
+}
+.modal-input:focus { outline: none; border-color: var(--teal); }
+
+.empty-state { text-align: center; padding: 40px 20px; color: var(--muted); }
+.empty-icon { font-size: 3rem; margin-bottom: 10px; opacity: 0.4; }
+.empty-text { font-size: 0.9rem; margin-bottom: 16px; }
+
+.search-bar { display: flex; gap: 8px; margin-bottom: 12px; }
+.search-input {
+  flex: 1; padding: 12px 14px; border: 1px solid var(--border); border-radius: var(--radius);
+  background: var(--card); color: var(--text); font-size: 0.95rem; min-height: 48px;
+}
+.search-input:focus { outline: none; border-color: var(--teal); }
+.search-input::placeholder { color: var(--muted); }
+
+/* Comments input */
+.comments-input {
+  width: 100%; padding: 12px 14px; border: 1px solid var(--border); border-radius: 8px;
+  background: var(--input); color: var(--text); font-size: 0.9rem; min-height: 48px;
+}
+.comments-input:focus { outline: none; border-color: var(--teal); }
+
+@media (max-width: 500px) {
+  .vitals-grid { grid-template-columns: 1fr; }
+  .stat-card { min-width: 65px; padding: 8px; }
+  .stat-num { font-size: 1.3rem; }
+  .session-bar { padding: 8px 10px; gap: 6px; }
+  .numpad-key { min-height: 52px; font-size: 1.2rem; }
+}
+
+@media print {
+  .header, .session-bar, .btn, .search-bar, .toggle-btn, .disp-btn, .del-btn, .numpad-overlay { display: none !important; }
+  .person-body { display: block !important; }
+  .person-card { break-inside: avoid; box-shadow: none; border: 1px solid #ccc; }
+}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="logo">
+    <div class="logo-icon">
+      <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="logoGrad" x1="0" y1="0" x2="44" y2="44">
+            <stop offset="0%" stop-color="#36d6b5"/>
+            <stop offset="100%" stop-color="#4da6ff"/>
+          </linearGradient>
+        </defs>
+        <rect width="44" height="44" rx="12" fill="url(#logoGrad)" opacity="0.15"/>
+        <!-- Stethoscope ear tubes -->
+        <path d="M14 8 C14 8 12 14 12 18 C12 22 14 24 18 24" stroke="url(#logoGrad)" stroke-width="2" stroke-linecap="round" fill="none"/>
+        <path d="M30 8 C30 8 32 14 32 18 C32 22 30 24 26 24" stroke="url(#logoGrad)" stroke-width="2" stroke-linecap="round" fill="none"/>
+        <!-- Stethoscope tube -->
+        <path d="M18 24 C18 24 18 30 22 30 C26 30 26 24 26 24" stroke="url(#logoGrad)" stroke-width="2" stroke-linecap="round" fill="none"/>
+        <!-- Chest piece -->
+        <circle cx="22" cy="33" r="4.5" stroke="url(#logoGrad)" stroke-width="2" fill="none"/>
+        <circle cx="22" cy="33" r="1.5" fill="#36d6b5"/>
+        <!-- Heartbeat line -->
+        <path d="M4 20 L11 20 L13 15 L16 25 L18 18 L20 20 L24 20 L26 14 L29 26 L31 18 L33 20 L40 20" stroke="#ff5757" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity="0.7">
+          <animate attributeName="opacity" values="0.4;0.9;0.4" dur="2s" repeatCount="indefinite"/>
+        </path>
+        <!-- Ear tips -->
+        <circle cx="14" cy="7" r="2" fill="#36d6b5"/>
+        <circle cx="30" cy="7" r="2" fill="#4da6ff"/>
+      </svg>
+    </div>
+    <div>
+      <div class="logo-text">VitallyMary</div>
+      <div class="logo-sub">Rehab &amp; Medical Monitor</div>
+    </div>
+  </div>
+  <div class="header-actions">
+    <button class="btn btn-ghost btn-sm" onclick="exportPDF()">PDF</button>
+    <button class="btn btn-ghost btn-sm" onclick="newSessionPrompt()">New</button>
+    <div class="theme-picker">
+      <button class="btn btn-ghost btn-sm" onclick="toggleThemeMenu()" id="themeBtn">&#127912;</button>
+      <div class="theme-menu" id="themeMenu">
+        <button class="theme-option" onclick="setTheme('dark')"><span class="theme-swatch" style="background:#0c1222;"></span>Dark</button>
+        <button class="theme-option" onclick="setTheme('light')"><span class="theme-swatch" style="background:#f0f2f5;border-color:#ccc;"></span>Light</button>
+        <button class="theme-option" onclick="setTheme('hicontrast')"><span class="theme-swatch" style="background:#000;border-color:#ffdd00;"></span>Hi-Contrast</button>
+        <button class="theme-option" onclick="setTheme('pink')"><span class="theme-swatch" style="background:linear-gradient(135deg,#ffc0d9,#e8458b);border-color:#e8458b;"></span>Mary Mode &#x1F496;</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="session-bar">
+  <div class="session-field"><label>Date</label><input type="date" id="sDate" onchange="save()"></div>
+  <div class="session-field"><label>Location</label><input type="text" id="sLocation" placeholder="Facility" onchange="save()"></div>
+  <div class="session-field"><label>Medical Officer</label><input type="text" id="sOfficer" placeholder="Name" onchange="save()"></div>
+</div>
+
+<div class="container">
+  <div class="stat-bar">
+    <div class="stat-card" id="statTotal"><div class="stat-num" id="statTotalNum">0</div><div class="stat-label">Personnel</div></div>
+    <div class="stat-card" id="statCleared"><div class="stat-num" id="statClearedNum">0</div><div class="stat-label">Cleared</div></div>
+    <div class="stat-card" id="statMonitor"><div class="stat-num" id="statMonitorNum">0</div><div class="stat-label">Monitoring</div></div>
+    <div class="stat-card" id="statAlerts"><div class="stat-num" id="statAlertsNum">0</div><div class="stat-label">Alerts</div></div>
+  </div>
+  <div class="search-bar">
+    <input class="search-input" id="searchInput" type="text" placeholder="Search personnel..." oninput="renderList()">
+    <button class="btn btn-teal" onclick="openAddModal()">+ Add</button>
+  </div>
+  <div id="personList"></div>
+</div>
+
+<!-- ADD PERSON MODAL -->
+<div class="modal-bg" id="addModal">
+  <div class="modal">
+    <div class="modal-title">Add Personnel</div>
+    <div style="margin-bottom:12px;">
+      <label style="font-size:0.75rem;color:var(--muted);font-weight:600;text-transform:uppercase;">Name</label>
+      <input class="modal-input" type="text" id="addName" placeholder="Full name">
+    </div>
+    <div style="margin-bottom:12px;">
+      <label style="font-size:0.75rem;color:var(--muted);font-weight:600;text-transform:uppercase;">Company / ID</label>
+      <input class="modal-input" type="text" id="addCompany" placeholder="e.g., Engine 1, Company A">
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost btn-sm" onclick="closeAddModal()">Cancel</button>
+      <button class="btn btn-teal btn-sm" onclick="confirmAdd()">Add Personnel</button>
+    </div>
+  </div>
+</div>
+
+<!-- TIME EDIT MODAL -->
+<div class="modal-bg" id="timeModal">
+  <div class="modal">
+    <div class="modal-title">Edit Time</div>
+    <div style="margin-bottom:12px;">
+      <label style="font-size:0.75rem;color:var(--muted);font-weight:600;text-transform:uppercase;">Time (HH:MM:SS)</label>
+      <input class="modal-input" type="time" id="timeInput" step="1">
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost btn-sm" onclick="clearTimeVal()">Clear</button>
+      <button class="btn btn-ghost btn-sm" onclick="closeTimeModal()">Cancel</button>
+      <button class="btn btn-teal btn-sm" onclick="saveTimeVal()">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- NUMBER PAD -->
+<div class="numpad-overlay" id="numpadOverlay">
+  <div class="numpad">
+    <div class="numpad-header">
+      <span class="numpad-label" id="numpadLabel">SpO2</span>
+      <button class="btn btn-ghost btn-sm" onclick="closeNumpad()" style="min-height:36px;padding:6px 14px;">Cancel</button>
+    </div>
+    <div class="numpad-display" id="numpadDisplay"><span class="placeholder">Tap to enter</span></div>
+    <div class="numpad-grid">
+      <button class="numpad-key" onclick="numpadType('1')">1</button>
+      <button class="numpad-key" onclick="numpadType('2')">2</button>
+      <button class="numpad-key" onclick="numpadType('3')">3</button>
+      <button class="numpad-key key-del" onclick="numpadDelete()">&#9003;</button>
+      <button class="numpad-key" onclick="numpadType('4')">4</button>
+      <button class="numpad-key" onclick="numpadType('5')">5</button>
+      <button class="numpad-key" onclick="numpadType('6')">6</button>
+      <button class="numpad-key key-slash" onclick="numpadType('/')">/</button>
+      <button class="numpad-key" onclick="numpadType('7')">7</button>
+      <button class="numpad-key" onclick="numpadType('8')">8</button>
+      <button class="numpad-key" onclick="numpadType('9')">9</button>
+      <button class="numpad-key key-clear" onclick="numpadClear()">CLR</button>
+      <button class="numpad-key" onclick="numpadType('.')">.</button>
+      <button class="numpad-key" onclick="numpadType('0')">0</button>
+      <button class="numpad-key" onclick="numpadType('0')">00</button>
+      <button class="numpad-key key-done" onclick="numpadDone()">DONE</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ============ DATA ============
+let state = {
+  session: { date: '', location: '', officer: '' },
+  personnel: []
+};
+
+function blankReading(type) {
+  return { type:type||'starting', time:getNow(), provider:getLastProvider(), pulse:'', resp:'', spo2:'', bp:'', temp:'', symptoms:'', airUsage:'', workTime:'', comments:'', disposition:'' };
+}
+function getLastProvider() {
+  try { return localStorage.getItem('vitallymary_lastprovider')||''; } catch(e) { return ''; }
+}
+function saveLastProvider(name) {
+  try { localStorage.setItem('vitallymary_lastprovider', name); } catch(e) {}
+}
+
+// ============ THEME ============
+let currentTheme = 'dark';
+function setTheme(theme) {
+  currentTheme = theme;
+  document.documentElement.className = theme === 'dark' ? '' : 'theme-' + theme;
+  try { localStorage.setItem('vitallymary_theme', theme); } catch(e) {}
+  updateThemeMenu();
+  closeThemeMenu();
+}
+function loadTheme() {
+  try { const t = localStorage.getItem('vitallymary_theme'); if(t) setTheme(t); } catch(e) {}
+}
+function toggleThemeMenu() {
+  const m = document.getElementById('themeMenu');
+  m.classList.toggle('open');
+  updateThemeMenu();
+}
+function closeThemeMenu() { document.getElementById('themeMenu').classList.remove('open'); }
+function updateThemeMenu() {
+  document.querySelectorAll('.theme-option').forEach(btn => {
+    const t = btn.onclick.toString().match(/setTheme\('(\w+)'\)/);
+    if(t) btn.classList.toggle('active', t[1] === currentTheme);
+  });
+}
+document.addEventListener('click', function(e) {
+  if(!e.target.closest('.theme-picker')) closeThemeMenu();
+});
+function getNow() { return new Date().toLocaleTimeString('en-US',{hour12:false,hour:'2-digit',minute:'2-digit',second:'2-digit'}); }
+function fmtTime(t) { return t || '--:--:--'; }
+
+// ============ PERSISTENCE ============
+function save() {
+  state.session.date = document.getElementById('sDate').value;
+  state.session.location = document.getElementById('sLocation').value;
+  state.session.officer = document.getElementById('sOfficer').value;
+  try { localStorage.setItem('vitallymary_data', JSON.stringify(state)); } catch(e) {}
+}
+function load() {
+  try { const d=localStorage.getItem('vitallymary_data'); if(d){state=JSON.parse(d);} if(!state.personnel)state.personnel=[]; } catch(e){}
+}
+function fillSession() {
+  document.getElementById('sDate').value=state.session.date||'';
+  document.getElementById('sLocation').value=state.session.location||'';
+  document.getElementById('sOfficer').value=state.session.officer||'';
+}
+function newSessionPrompt() {
+  if(!confirm('Start new session? Current data will be saved to history.'))return;
+  try{let h=JSON.parse(localStorage.getItem('vitallymary_history')||'[]');h.unshift({savedAt:new Date().toISOString(),data:JSON.parse(JSON.stringify(state))});if(h.length>20)h=h.slice(0,20);localStorage.setItem('vitallymary_history',JSON.stringify(h));}catch(e){}
+  state={session:{date:'',location:'',officer:''},personnel:[]};
+  save();fillSession();renderList();updateStats();
+}
+
+// ============ NUMBER PAD ============
+let numpadValue = '';
+let numpadCallback = null;
+let numpadFieldLabel = '';
+
+function openNumpad(label, currentVal, callback) {
+  numpadFieldLabel = label;
+  numpadValue = currentVal || '';
+  numpadCallback = callback;
+  document.getElementById('numpadLabel').textContent = label;
+  updateNumpadDisplay();
+  document.getElementById('numpadOverlay').classList.add('open');
+}
+function closeNumpad() { document.getElementById('numpadOverlay').classList.remove('open'); numpadCallback=null; }
+function numpadType(ch) {
+  if (ch === '00') { numpadValue += '00'; }
+  else { numpadValue += ch; }
+  updateNumpadDisplay();
+}
+function numpadDelete() { numpadValue = numpadValue.slice(0,-1); updateNumpadDisplay(); }
+function numpadClear() { numpadValue = ''; updateNumpadDisplay(); }
+function numpadDone() {
+  if (numpadCallback) numpadCallback(numpadValue);
+  closeNumpad();
+}
+function updateNumpadDisplay() {
+  const disp = document.getElementById('numpadDisplay');
+  if (numpadValue) {
+    disp.innerHTML = numpadValue;
+    // Check for alert conditions
+    disp.className = 'numpad-display';
+    if (numpadFieldLabel === 'SpO2/SpCO (%)') {
+      const v = parseInt(numpadValue);
+      if (!isNaN(v) && v < 90) disp.classList.add('alert');
+      else if (!isNaN(v) && v < 95) disp.classList.add('warn');
+    } else if (numpadFieldLabel === 'Temperature (°F)') {
+      const v = parseFloat(numpadValue);
+      if (!isNaN(v) && v > 103) disp.classList.add('alert');
+      else if (!isNaN(v) && v > 100.4) disp.classList.add('warn');
+    }
+  } else {
+    disp.innerHTML = '<span class="placeholder">Tap to enter</span>';
+    disp.className = 'numpad-display';
+  }
+}
+
+// ============ VITALS ALERTS ============
+function checkReading(r) {
+  let level = 'ok';
+  if (r.pulse==='irr') level='alert';
+  if (r.resp==='abn') level='alert';
+  if (r.symptoms==='yes') level='alert';
+  if (r.disposition==='transfer') level='alert';
+  if (r.disposition==='remain') level=level==='alert'?'alert':'warn';
+  if (r.spo2){const v=parseInt(r.spo2);if(!isNaN(v)){if(v<90)level='alert';else if(v<95&&level!=='alert')level='warn';}}
+  if (r.temp){const v=parseFloat(r.temp);if(!isNaN(v)){if(v>103)level='alert';else if(v>100.4&&level!=='alert')level='warn';}}
+  if (r.bp){const p=r.bp.split('/');const s=parseInt(p[0]);if(!isNaN(s)){if(s>180||s<80)level='alert';else if((s>150||s<90)&&level!=='alert')level='warn';}}
+  return level;
+}
+function personStatus(p) {
+  if(!p.readings||p.readings.length===0)return'new';
+  const lr=p.readings[p.readings.length-1];
+  if(lr.disposition==='released')return'ok';
+  if(lr.disposition==='transfer')return'alert';
+  if(lr.disposition==='remain')return'warn';
+  return checkReading(lr);
+}
+
+// ============ STATS ============
+function updateStats() {
+  const total=state.personnel.length; let cleared=0,monitoring=0,alerts=0;
+  state.personnel.forEach(p=>{const s=personStatus(p);if(s==='ok')cleared++;else if(s==='warn')monitoring++;else if(s==='alert')alerts++;});
+  document.getElementById('statTotalNum').textContent=total;
+  document.getElementById('statClearedNum').textContent=cleared;
+  document.getElementById('statMonitorNum').textContent=monitoring;
+  document.getElementById('statAlertsNum').textContent=alerts;
+  document.getElementById('statAlerts').className='stat-card'+(alerts>0?' alert':'');
+  document.getElementById('statMonitor').className='stat-card'+(monitoring>0?' warn':'');
+}
+
+// ============ ADD/TIME MODALS ============
+function openAddModal(){document.getElementById('addName').value='';document.getElementById('addCompany').value='';document.getElementById('addModal').classList.add('open');setTimeout(()=>document.getElementById('addName').focus(),100);}
+function closeAddModal(){document.getElementById('addModal').classList.remove('open');}
+function confirmAdd(){
+  const name=document.getElementById('addName').value.trim();
+  if(!name){alert('Please enter a name.');return;}
+  state.personnel.push({id:'p_'+Date.now()+'_'+Math.random().toString(36).substr(2,4),name,company:document.getElementById('addCompany').value.trim(),collapsed:false,readings:[]});
+  save();closeAddModal();renderList();updateStats();
+}
+let timeCb=null;
+function openTimeModal(cur,cb){timeCb=cb;document.getElementById('timeInput').value=cur||'';document.getElementById('timeModal').classList.add('open');}
+function closeTimeModal(){document.getElementById('timeModal').classList.remove('open');timeCb=null;}
+function saveTimeVal(){if(timeCb)timeCb(document.getElementById('timeInput').value||null);closeTimeModal();}
+function clearTimeVal(){if(timeCb)timeCb(null);closeTimeModal();}
+
+// ============ RENDER ============
+function renderList() {
+  const container=document.getElementById('personList');
+  const filter=(document.getElementById('searchInput').value||'').toLowerCase().trim();
+  let list=state.personnel;
+  if(filter)list=list.filter(p=>p.name.toLowerCase().includes(filter)||(p.company||'').toLowerCase().includes(filter));
+  const order={alert:0,warn:1,new:2,ok:3};
+  list.sort((a,b)=>(order[personStatus(a)]||9)-(order[personStatus(b)]||9));
+
+  if(list.length===0&&!filter){container.innerHTML=`<div class="empty-state"><div class="empty-icon">&#129657;</div><div class="empty-text">No personnel yet.<br>Tap <strong>+ Add</strong> to start tracking vitals.</div></div>`;return;}
+  if(list.length===0&&filter){container.innerHTML='<div class="empty-state"><div class="empty-text">No matches found.</div></div>';return;}
+
+  let html='';
+  list.forEach(p=>{
+    const pi=state.personnel.indexOf(p);
+    const status=personStatus(p);
+    const lastR=p.readings.length>0?p.readings[p.readings.length-1]:null;
+    const initials=p.name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
+    const cardClass=status==='alert'?'has-alert':status==='warn'?'has-warn':'';
+    const avatarClass=status==='new'?'new':status;
+    let tags='';
+    if(lastR){
+      if(lastR.disposition==='released')tags+='<span class="tag tag-ok">Cleared</span>';
+      else if(lastR.disposition==='remain')tags+='<span class="tag tag-warn">Monitoring</span>';
+      else if(lastR.disposition==='transfer')tags+='<span class="tag tag-alert">Transfer EMS</span>';
+      else tags+='<span class="tag tag-pending">In Progress</span>';
+      tags+=`<span class="tag" style="color:var(--text2);">${p.readings.length} reading${p.readings.length>1?'s':''}</span>`;
+    } else { tags='<span class="tag tag-pending">No readings</span>'; }
+    if(p.company)tags+=`<span class="tag" style="color:var(--muted);">${esc(p.company)}</span>`;
+
+    html+=`<div class="person-card ${cardClass}">
+      <div class="person-header" onclick="togglePerson(${pi})">
+        <div class="person-avatar ${avatarClass}">${initials}</div>
+        <div class="person-info"><div class="person-name">${esc(p.name)}</div><div class="person-meta">${tags}</div></div>
+        <div class="person-actions">
+          <button class="del-btn" onclick="event.stopPropagation();removePerson(${pi})">&times;</button>
+          <span class="person-chevron ${p.collapsed?'':'open'}">&#9654;</span>
+        </div>
+      </div>
+      <div class="person-body ${p.collapsed?'':'open'}">`;
+
+    if(p.readings.length===0){
+      html+=`<div style="text-align:center;padding:20px 8px;color:var(--muted);">
+        <div style="font-size:0.95rem;margin-bottom:12px;">No vitals recorded yet</div>
+        <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;">
+          <button class="btn btn-ghost" style="color:var(--blue);flex:1;min-width:100px;" onclick="addReading(${pi},'starting')">+ Starting</button>
+          <button class="btn btn-ghost" style="color:var(--green);flex:1;min-width:80px;" onclick="addReading(${pi},'rehab')">+ Rehab</button>
+          <button class="btn btn-ghost" style="color:var(--yellow);flex:1;min-width:100px;" onclick="addReading(${pi},'ending')">+ Ending</button>
+        </div></div>`;
+    }
+
+    // Timeline
+    if(p.readings.length>0){
+      html+='<div class="timeline"><div class="timeline-title">&#128337; History</div>';
+      p.readings.forEach((r,ri)=>{
+        const rLevel=checkReading(r);const dotClass=rLevel==='alert'?'alert':r.type;const isLast=ri===p.readings.length-1;
+        let vitals=[];
+        if(r.pulse)vitals.push({label:'P:'+(r.pulse==='reg'?'Reg':'IRR'),alert:r.pulse==='irr'});
+        if(r.resp)vitals.push({label:'R:'+(r.resp==='norm'?'Norm':'ABN'),alert:r.resp==='abn'});
+        if(r.spo2){const v=parseInt(r.spo2);vitals.push({label:'SpO2:'+r.spo2,alert:!isNaN(v)&&v<95});}
+        if(r.bp)vitals.push({label:'BP:'+r.bp,alert:false});
+        if(r.temp){const v=parseFloat(r.temp);vitals.push({label:r.temp+'°F',alert:!isNaN(v)&&v>100.4});}
+        if(r.symptoms==='yes')vitals.push({label:'Symptoms',alert:true});
+        const dt=r.disposition==='released'?'Released/Cleared':r.disposition==='remain'?'Remain/Monitor':r.disposition==='transfer'?'Transfer to EMS':'';
+        const dc=r.disposition==='released'?'var(--green)':r.disposition==='remain'?'var(--yellow)':r.disposition==='transfer'?'var(--red)':'';
+        html+=`<div class="tl-item"><div class="tl-dot-col"><div class="tl-dot ${dotClass}"></div>${isLast?'':'<div class="tl-line"></div>'}</div>
+          <div class="tl-content"><div style="display:flex;justify-content:space-between;align-items:center;">
+            <span class="reading-type-tag ${r.type}">${r.type==='starting'?'Starting':r.type==='ending'?'Ending':'Rehab'}</span>
+            <span class="tl-time">${fmtTime(r.time)}</span></div>
+            ${r.provider?`<div style="font-size:0.73rem;color:var(--text2);margin-top:2px;">By: <strong>${esc(r.provider)}</strong></div>`:''}
+            ${vitals.length?'<div class="tl-vitals">'+vitals.map(v=>`<span class="tl-vital-tag ${v.alert?'alert':'ok'}">${v.label}</span>`).join('')+'</div>':''}
+            ${dt?`<div class="tl-disp" style="color:${dc};">${dt}</div>`:''}</div></div>`;
+      });
+      html+='</div>';
+    }
+
+    // Reading cards
+    if(p.readings.length>0){
+      html+='<div style="margin-top:10px;">';
+      [...p.readings].reverse().forEach((r,revIdx)=>{
+        const ri=p.readings.length-1-revIdx;
+        const rLevel=checkReading(r);
+        const lc=rLevel==='alert'?'alert-reading':rLevel==='warn'?'warn-reading':'ok-reading';
+        const pp=`state.personnel[${pi}].readings[${ri}]`;
+
+        // Vital tap value helpers
+        const spo2Class=r.spo2&&parseInt(r.spo2)<90?'alert-value':r.spo2&&parseInt(r.spo2)<95?'warn-value':'';
+        const tempClass=r.temp&&parseFloat(r.temp)>103?'alert-value':r.temp&&parseFloat(r.temp)>100.4?'warn-value':'';
+
+        html+=`<div class="reading-card ${lc}">
+          <div class="reading-header">
+            <div style="display:flex;gap:8px;align-items:center;">
+              <select class="vital-tap" style="padding:6px 10px;font-size:0.85rem;width:auto;font-weight:700;min-height:36px;font-family:inherit;"
+                onchange="${pp}.type=this.value;save();renderList();updateStats();">
+                <option value="starting" ${r.type==='starting'?'selected':''}>Starting Vitals</option>
+                <option value="rehab" ${r.type==='rehab'?'selected':''}>Rehab</option>
+                <option value="ending" ${r.type==='ending'?'selected':''}>Ending Vitals</option>
+              </select>
+              <span class="reading-time" onclick="openTimeModal('${r.time||''}',function(t){${pp}.time=t;save();renderList();})">${fmtTime(r.time)}</span>
+            </div>
+            <button class="del-btn" onclick="removeReading(${pi},${ri})">&times;</button>
+          </div>
+          <div class="provider-row">
+            <span class="provider-label">Provider</span>
+            <input class="provider-input" type="text" value="${esc(r.provider||'')}" placeholder="Who is taking vitals?"
+              onchange="${pp}.provider=this.value;saveLastProvider(this.value);save();">
+          </div>
+          <div class="vitals-grid">
+            <div class="vital-field">
+              <span class="vital-label">Pulse</span>
+              <div class="toggle-row">
+                <button class="toggle-btn ${r.pulse==='reg'?'sel-green':''}" onclick="setV(${pi},${ri},'pulse','reg')">Regular</button>
+                <button class="toggle-btn ${r.pulse==='irr'?'sel-red':''}" onclick="setV(${pi},${ri},'pulse','irr')">Irregular</button>
+              </div>
+            </div>
+            <div class="vital-field">
+              <span class="vital-label">Respirations</span>
+              <div class="toggle-row">
+                <button class="toggle-btn ${r.resp==='norm'?'sel-green':''}" onclick="setV(${pi},${ri},'resp','norm')">Normal</button>
+                <button class="toggle-btn ${r.resp==='abn'?'sel-red':''}" onclick="setV(${pi},${ri},'resp','abn')">Abnormal</button>
+              </div>
+            </div>
+            <div class="vital-field">
+              <span class="vital-label">SpO2/SpCO (%)</span>
+              <div class="vital-tap ${spo2Class} ${r.spo2?'':'empty'}" onclick="openNumpad('SpO2/SpCO (%)','${esc(r.spo2)}',function(v){${pp}.spo2=v;save();renderList();updateStats();})">
+                ${r.spo2?esc(r.spo2):'Tap to enter'}<span class="tap-hint">${r.spo2?'':'e.g. 98/2'}</span>
+              </div>
+            </div>
+            <div class="vital-field">
+              <span class="vital-label">Blood Pressure</span>
+              <div class="vital-tap ${r.bp?'':'empty'}" onclick="openNumpad('Blood Pressure','${esc(r.bp)}',function(v){${pp}.bp=v;save();renderList();updateStats();})">
+                ${r.bp?esc(r.bp):'Tap to enter'}<span class="tap-hint">${r.bp?'':'e.g. 120/80'}</span>
+              </div>
+            </div>
+            <div class="vital-field">
+              <span class="vital-label">Temperature (°F)</span>
+              <div class="vital-tap ${tempClass} ${r.temp?'':'empty'}" onclick="openNumpad('Temperature (°F)','${esc(r.temp)}',function(v){${pp}.temp=v;save();renderList();updateStats();})">
+                ${r.temp?esc(r.temp)+'°F':'Tap to enter'}<span class="tap-hint">${r.temp?'':'e.g. 98.6'}</span>
+              </div>
+            </div>
+            <div class="vital-field">
+              <span class="vital-label">Symptoms</span>
+              <div class="toggle-row">
+                <button class="toggle-btn ${r.symptoms==='no'?'sel-green':''}" onclick="setV(${pi},${ri},'symptoms','no')">No</button>
+                <button class="toggle-btn ${r.symptoms==='yes'?'sel-red':''}" onclick="setV(${pi},${ri},'symptoms','yes')">Yes</button>
+              </div>
+            </div>
+            <div class="vital-field">
+              <span class="vital-label">Air Usage (PSI)</span>
+              <div class="vital-tap ${r.airUsage?'':'empty'}" onclick="openNumpad('Air Usage (PSI)','${esc(r.airUsage)}',function(v){${pp}.airUsage=v;save();})">
+                ${r.airUsage?esc(r.airUsage)+' PSI':'Tap to enter'}
+              </div>
+            </div>
+            <div class="vital-field">
+              <span class="vital-label">Time Working (min)</span>
+              <div class="vital-tap ${r.workTime?'':'empty'}" onclick="openNumpad('Time Working (min)','${esc(r.workTime)}',function(v){${pp}.workTime=v;save();})">
+                ${r.workTime?esc(r.workTime)+' min':'Tap to enter'}
+              </div>
+            </div>
+            <div class="vital-field full">
+              <span class="vital-label">Comments</span>
+              <input class="comments-input" type="text" value="${esc(r.comments)}" placeholder="Notes..."
+                onchange="${pp}.comments=this.value;save();">
+            </div>
+            <div class="vital-field full">
+              <span class="vital-label">Disposition</span>
+              <div class="disp-row">
+                <button class="disp-btn ${r.disposition==='released'?'sel-released':''}" onclick="setDisp(${pi},${ri},'released')">Released / Cleared</button>
+                <button class="disp-btn ${r.disposition==='remain'?'sel-remain':''}" onclick="setDisp(${pi},${ri},'remain')">Remain / Monitor</button>
+                <button class="disp-btn ${r.disposition==='transfer'?'sel-transfer':''}" onclick="setDisp(${pi},${ri},'transfer')">Transfer to EMS</button>
+              </div>
+            </div>
+          </div>
+        </div>`;
+      });
+      html+=`<div style="display:flex;gap:8px;margin-top:8px;">
+        <button class="btn btn-ghost btn-sm" style="flex:1;color:var(--blue);" onclick="addReading(${pi},'starting')">+ Starting</button>
+        <button class="btn btn-ghost btn-sm" style="flex:1;color:var(--green);" onclick="addReading(${pi},'rehab')">+ Rehab</button>
+        <button class="btn btn-ghost btn-sm" style="flex:1;color:var(--yellow);" onclick="addReading(${pi},'ending')">+ Ending</button>
+      </div></div>`;
+    }
+
+    html+='</div></div>';
+  });
+  container.innerHTML=html;
+}
+
+// ============ ACTIONS ============
+function togglePerson(pi){state.personnel[pi].collapsed=!state.personnel[pi].collapsed;save();renderList();}
+function removePerson(pi){if(!confirm('Remove '+state.personnel[pi].name+'?'))return;state.personnel.splice(pi,1);save();renderList();updateStats();}
+function addReading(pi,type){state.personnel[pi].readings.push(blankReading(type||'rehab'));state.personnel[pi].collapsed=false;save();renderList();updateStats();}
+function removeReading(pi,ri){if(!confirm('Remove this reading?'))return;state.personnel[pi].readings.splice(ri,1);save();renderList();updateStats();}
+function setV(pi,ri,field,val){const r=state.personnel[pi].readings[ri];r[field]=r[field]===val?'':val;save();renderList();updateStats();}
+function setDisp(pi,ri,val){const r=state.personnel[pi].readings[ri];r.disposition=r.disposition===val?'':val;save();renderList();updateStats();}
+
+// ============ EXPORT ============
+function exportPDF(){
+  const w=window.open('','_blank');const s=state.session;
+  let h=`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>VitallyMary Report</title>
+  <style>body{font-family:Arial,sans-serif;font-size:11px;margin:20px;color:#222;}h1{font-size:18px;text-align:center;color:#36d6b5;margin-bottom:2px;}h2{font-size:14px;margin-top:14px;margin-bottom:4px;border-bottom:2px solid #36d6b5;padding-bottom:2px;color:#333;}.info{display:flex;gap:16px;margin-bottom:10px;font-size:11px;}.info span{font-weight:bold;}table{width:100%;border-collapse:collapse;margin-bottom:10px;}th,td{border:1px solid #ccc;padding:3px 6px;text-align:left;font-size:10px;}th{background:#f0f0f0;font-weight:bold;}.alert{color:#ff5757;font-weight:bold;}.ok{color:#34d399;font-weight:bold;}.warn{color:#ffc947;font-weight:bold;}@media print{body{margin:10px;}}</style></head><body>`;
+  h+=`<h1>VitallyMary — Medical Monitoring Report</h1>`;
+  h+=`<div class="info"><div><span>Date:</span> ${s.date||'N/A'}</div><div><span>Location:</span> ${s.location||'N/A'}</div><div><span>Medical Officer:</span> ${s.officer||'N/A'}</div></div>`;
+  state.personnel.forEach(p=>{
+    const status=personStatus(p);const sl=status==='ok'?'Cleared':status==='alert'?'ALERT':status==='warn'?'Monitoring':'Pending';const sc=status==='ok'?'ok':status==='alert'?'alert':status==='warn'?'warn':'';
+    h+=`<h2>${esc(p.name)} ${p.company?'('+esc(p.company)+')':''} — <span class="${sc}">${sl}</span></h2>`;
+    h+=`<table><tr><th>Type</th><th>Time</th><th>Provider</th><th>Pulse</th><th>Resp.</th><th>SpO2</th><th>BP</th><th>Temp</th><th>Sx</th><th>Air</th><th>Work</th><th>Disposition</th><th>Comments</th></tr>`;
+    p.readings.forEach(r=>{
+      const dc=r.disposition==='released'?'ok':r.disposition==='transfer'?'alert':r.disposition==='remain'?'warn':'';
+      const dl=r.disposition==='released'?'Released':r.disposition==='remain'?'Remain/Monitor':r.disposition==='transfer'?'TRANSFER EMS':'--';
+      h+=`<tr><td><strong>${r.type==='starting'?'Starting':r.type==='ending'?'Ending':'Rehab'}</strong></td><td>${r.time||'--'}</td><td>${esc(r.provider)||'--'}</td><td class="${r.pulse==='irr'?'alert':''}">${r.pulse==='reg'?'Reg.':r.pulse==='irr'?'IRR.':'--'}</td><td class="${r.resp==='abn'?'alert':''}">${r.resp==='norm'?'Norm.':r.resp==='abn'?'ABN.':'--'}</td><td class="${r.spo2&&parseInt(r.spo2)<95?'alert':''}">${r.spo2||'--'}</td><td>${r.bp||'--'}</td><td class="${r.temp&&parseFloat(r.temp)>100.4?'alert':''}">${r.temp?r.temp+'°F':'--'}</td><td class="${r.symptoms==='yes'?'alert':''}">${r.symptoms==='no'?'No':r.symptoms==='yes'?'YES':'--'}</td><td>${r.airUsage||'--'}</td><td>${r.workTime||'--'}</td><td class="${dc}">${dl}</td><td>${esc(r.comments)||'--'}</td></tr>`;
+    });
+    h+='</table>';
+  });
+  h+=`<div style="margin-top:20px;text-align:center;color:#999;font-size:9px;">Generated by VitallyMary — ${new Date().toLocaleString()}</div></body></html>`;
+  w.document.write(h);w.document.close();setTimeout(()=>w.print(),500);
+}
+
+// ============ UTILS ============
+function esc(s){const d=document.createElement('div');d.textContent=s||'';return d.innerHTML;}
+
+// ============ INIT ============
+document.addEventListener('DOMContentLoaded',function(){
+  try{loadTheme();load();fillSession();if(!state.session.date){document.getElementById('sDate').value=new Date().toISOString().split('T')[0];save();}renderList();updateStats();}catch(e){console.error('Init:',e);}
+});
+try{document.getElementById('addName').addEventListener('keydown',function(e){if(e.key==='Enter')document.getElementById('addCompany').focus();});}catch(e){}
+try{document.getElementById('addCompany').addEventListener('keydown',function(e){if(e.key==='Enter')confirmAdd();});}catch(e){}
+
+try{if('serviceWorker' in navigator&&location.protocol!=='file:'){const sw=`const C='vm-v2';self.addEventListener('install',e=>{self.skipWaiting();});self.addEventListener('activate',e=>{e.waitUntil(clients.claim());});self.addEventListener('fetch',e=>{if(e.request.url.includes(self.location.origin)){e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request).then(resp=>{const c=resp.clone();caches.open(C).then(ca=>ca.put(e.request,c));return resp;}).catch(()=>caches.match(e.request))));}});`;navigator.serviceWorker.register(URL.createObjectURL(new Blob([sw],{type:'application/javascript'}))).catch(()=>{});}}catch(e){}
+</script>
+</body>
+</html>
