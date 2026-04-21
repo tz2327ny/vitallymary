@@ -864,13 +864,13 @@ function renderList() {
             </div>
             <div class="vital-field">
               <span class="vital-label">Air Usage (PSI)</span>
-              <div class="vital-tap ${r.airUsage?'':'empty'}" onclick="openNumpad('Air Usage (PSI)','${esc(r.airUsage)}',function(v){${pp}.airUsage=v;save();})">
+              <div class="vital-tap ${r.airUsage?'':'empty'}" onclick="openNumpad('Air Usage (PSI)','${esc(r.airUsage)}',function(v){${pp}.airUsage=v;save();renderList();updateStats();})">
                 ${r.airUsage?esc(r.airUsage)+' PSI':'Tap to enter'}
               </div>
             </div>
             <div class="vital-field">
               <span class="vital-label">Time Working (min)</span>
-              <div class="vital-tap ${r.workTime?'':'empty'}" onclick="openNumpad('Time Working (min)','${esc(r.workTime)}',function(v){${pp}.workTime=v;save();})">
+              <div class="vital-tap ${r.workTime?'':'empty'}" onclick="openNumpad('Time Working (min)','${esc(r.workTime)}',function(v){${pp}.workTime=v;save();renderList();updateStats();})">
                 ${r.workTime?esc(r.workTime)+' min':'Tap to enter'}
               </div>
             </div>
